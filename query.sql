@@ -1,38 +1,31 @@
--- Запит 1: Вивести кількість ігор випущених за кожен рік.
--- Роки - кількість ігор.
-select count(fact_game_sale.original_price), year 
-from fact_game_sale 
- INNER JOIN dim_release_sf
- ON fact_game_sale.release_id = dim_release_sf.release_id
- INNER JOIN dim_month_sf
- ON dim_month_sf.month_id = dim_release_sf.month_id
- INNER JOIN dim_year_sf
- ON dim_month_sf.year_id = dim_year_sf.year_id
- GROUP BY year;
+--Р’РёРІРµСЃС‚Рё РєС–Р»СЊРєС–СЃС‚СЊ С–РіРѕСЂ РІРёРїСѓС‰РµРЅРёС… Р·Р° РєРѕР¶РµРЅ СЂС–Рє.
+select dim_year_sf.release_year, count(game)
+from fact_game_sale
+INNER JOIN dim_year_sf
+ON fact_game_sale.release_year = dim_year_sf.release_year
+GROUP BY dim_year_sf.release_year;
 
 
--- Вивести відсоткову залежність кількості ігор одного жанру відносно інших.
-select count(dim_game_sf.game_id), genre
- from dim_game_sf
- INNER JOIN dim_genre_sf
- ON dim_genre_sf.genre_id = dim_game_sf.genre_id
- GROUP BY dim_genre_sf.genre;
+-- Р’РёРІРµСЃС‚Рё РІС–РґСЃРѕС‚РєРѕРІСѓ Р·Р°Р»РµР¶РЅС–СЃС‚СЊ РєС–Р»СЊРєРѕСЃС‚С– С–РіРѕСЂ РѕРґРЅРѕРіРѕ Р¶Р°РЅСЂСѓ РІС–РґРЅРѕСЃРЅРѕ С–РЅС€РёС….
+select count(dim_game_sf.game), dim_genre_sf.genre
+from dim_game_sf
+INNER JOIN dim_genre_sf
+ON dim_genre_sf.genre = dim_game_sf.genre
+GROUP BY dim_genre_sf.genre
 
---Динаміка кільксості ігор жанру "стратегії" по роках
-select year
-from fact_game_sale 
-     INNER JOIN dim_release_sf
-     ON fact_game_sale.release_id = dim_release_sf.release_id
-     INNER JOIN dim_month_sf
-     ON dim_month_sf.month_id = dim_release_sf.month_id
-     INNER JOIN dim_year_sf
-     ON dim_month_sf.year_id = dim_year_sf.year_id
-     
 
-     select dim_genre_sf.genre
-     from dim_game_sf INNER JOIN dim_genre_id
-     ON dim_game_sf.genre_id = dim_genre_sf.genre_id;
-     
-     
-   
- 
+--Р”РёРЅР°РјС‹РєР° РєС‹Р»СЊРєРѕСЃС‚С‹ С–РіРѕСЂ Р¶Р°РЅСЂСѓ 'Strategy' РїРѕ СЂРѕРєР°С…
+select  
+ count(dim_game_sf.game), dim_year_sf.release_year
+
+from fact_game_sale INNER JOIN 
+    (
+        dim_game_sf
+        INNER JOIN dim_genre_sf
+        ON dim_genre_sf.genre = dim_game_sf.genre
+    )
+    ON fact_game_sale.game = dim_game_sf.game
+    INNER JOIN dim_year_sf
+    ON fact_game_sale.release_year = dim_year_sf.release_year
+where dim_genre_sf.genre = 'Strategy'
+GROUP BY dim_year_sf.release_year;

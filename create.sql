@@ -121,7 +121,7 @@ ADD CONSTRAINT all_review_pk PRIMARY KEY (all_review_id);
 
 CREATE TABLE fact_game_sale
 (
-original_price integer,
+original_price float,
 game_id integer,
 release_id integer,
 all_review_id integer

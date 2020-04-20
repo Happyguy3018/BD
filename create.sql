@@ -39,7 +39,7 @@ ADD CONSTRAINT Developer_Game_Developer_fk
 ALTER TABLE Developer_Game
 ADD CONSTRAINT Developer_Game_Game_fk
  FOREIGN KEY (game)
- REFERENCES Game (game);
+ REFERENCES Game_title (game);
 
  
 CREATE TABLE Review

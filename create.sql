@@ -1,3 +1,15 @@
+CREATE TABLE GAME
+(
+price float,
+game char(64),
+r_year integer,
+review char(64)
+);
+CREATE TABLE Game_title
+(
+game char(64)
+);
+
 CREATE TABLE Developer
 (
 developer char(64)
@@ -16,10 +28,7 @@ genre char(64)
 ALTER TABLE Developer_Genre
 ADD CONSTRAINT developer_genre_pk PRIMARY KEY (developer, genre);
 
-ALTER TABLE Developer_Genre
-ADD CONSTRAINT Developer_Genre_Developer_fk
- FOREIGN KEY (developer)
- REFERENCES Developer (developer);
+
 
 CREATE TABLE Developer_Game
 (
@@ -31,15 +40,6 @@ publisher char(64)
 ALTER TABLE Developer_Game
 ADD CONSTRAINT developer_game_pk PRIMARY KEY (developer, game);
 
-ALTER TABLE Developer_Game
-ADD CONSTRAINT Developer_Game_Developer_fk
- FOREIGN KEY (developer)
- REFERENCES Developer (developer);
- 
-ALTER TABLE Developer_Game
-ADD CONSTRAINT Developer_Game_Game_fk
- FOREIGN KEY (game)
- REFERENCES Game_title (game);
 
  
 CREATE TABLE Review
@@ -77,7 +77,8 @@ game char(64),
 r_year integer,
 review char(64)
 );
-
+ALTER TABLE Game_title
+ADD CONSTRAINT game_title_pk PRIMARY KEY (game);
 ALTER TABLE Game
 ADD CONSTRAINT game_pk PRIMARY KEY (game);
 
@@ -98,6 +99,18 @@ ADD CONSTRAINT Game_Ryear_fk
  
  
 
+ALTER TABLE Developer_Genre
+ADD CONSTRAINT Developer_Genre_Developer_fk
+ FOREIGN KEY (developer)
+ REFERENCES Developer (developer);
 
+  ALTER TABLE Developer_Game
+ADD CONSTRAINT Developer_Game_Developer_fk
+ FOREIGN KEY (developer)
+ REFERENCES Developer (developer);
+ 
+ALTER TABLE Developer_Game
+ADD CONSTRAINT Developer_Game_Game_fk
+ FOREIGN KEY (game)
+ REFERENCES Game_title (game);
 
-  
